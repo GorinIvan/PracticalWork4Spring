@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Меню ресторана</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #ff9800; color: white; }
+        form.search-form { margin-bottom: 20px; background: #fff3e0; padding: 10px; border-radius: 5px; }
+        input[type="text"], input[type="number"] { padding: 5px; margin-right: 10px; }
+        button { padding: 5px 15px; background-color: #ff9800; color: white; border: none; cursor: pointer; border-radius: 3px; }
+        a { text-decoration: none; color: #ff9800; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Список блюд (Меню)</h2>
+
+    <form action="/menuItems" method="get" class="search-form">
+        <label>Поиск по ID: <input type="number" name="searchId"></label>
+        <label>Поиск по Названию: <input type="text" name="searchName"></label>
+        <button type="submit">Найти</button>
+        <a href="/menuItems">Сбросить</a>
+    </form>
+
+    <a href="/menuItems/new">Добавить новое блюдо</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Доступно</th>
+            <th>ID Категории</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${menuItems}">
+            <td th:text="${item.idMenuItem}"></td>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.description}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.available ? 'Да' : 'Нет'}"></td>
+            <td th:text="${item.categoryId}"></td>
+            <td>
+                <a th:href="@{/menuItems/delete/{id}(id=${item.idMenuItem})}">Удалить</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

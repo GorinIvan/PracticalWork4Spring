@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Роли</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #2196F3; color: white; }
+    </style>
+</head>
+<body>
+<h2>Поиск роли</h2>
+<form action="/roles" method="get">
+    ID: <input type="number" name="searchId">
+    Название: <input type="text" name="searchName">
+    <button type="submit">Найти</button>
+    <a href="/roles">Сбросить</a>
+</form>
+
+<h2>Добавить роль</h2>
+<form action="/roles" method="post">
+    Название: <input type="text" name="nameRole" required>
+    Описание: <input type="text" name="description">
+    <button type="submit">Добавить</button>
+</form>
+
+<h2>Список ролей</h2>
+<table>
+    <tr><th>ID</th><th>Название</th><th>Описание</th><th>Действия</th></tr>
+    <tr th:each="r : ${roles}">
+        <td th:text="${r.idRole}"></td>
+        <td th:text="${r.nameRole}"></td>
+        <td th:text="${r.description}"></td>
+        <td><a th:href="@{/roles/delete/{id}(id=${r.idRole})}">Удалить</a></td>
+    </tr>
+</table>
+</body>
+</html>

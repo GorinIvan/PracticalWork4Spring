@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Студенты</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #607D8B; color: white; }
+    </style>
+</head>
+<body>
+<h2>Поиск студента</h2>
+<form action="/students" method="get">
+    ID: <input type="number" name="searchId">
+    Имя: <input type="text" name="searchName">
+    <button type="submit">Найти</button>
+    <a href="/students">Сбросить</a>
+</form>
+
+<h2>Добавить студента</h2>
+<form action="/students" method="post">
+    Имя: <input type="text" name="name" required>
+    Фамилия: <input type="text" name="surname" required>
+    Email: <input type="email" name="email">
+    <button type="submit">Добавить</button>
+</form>
+
+<h2>Список студентов</h2>
+<table>
+    <tr><th>ID</th><th>Имя</th><th>Фамилия</th><th>Email</th><th>Действия</th></tr>
+    <tr th:each="s : ${students}">
+        <td th:text="${s.id}"></td>
+        <td th:text="${s.name}"></td>
+        <td th:text="${s.surname}"></td>
+        <td th:text="${s.email}"></td>
+        <td><a th:href="@{/students/delete/{id}(id=${s.id})}">Удалить</a></td>
+    </tr>
+</table>
+</body>
+</html>

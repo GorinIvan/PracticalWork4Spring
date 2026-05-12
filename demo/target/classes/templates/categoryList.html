@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Категории</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+<h2>Поиск категории</h2>
+<form action="/categories" method="get">
+    ID: <input type="number" name="searchId">
+    Название: <input type="text" name="searchName">
+    <button type="submit">Найти</button>
+    <a href="/categories">Сбросить</a>
+</form>
+
+<h2>Добавить категорию</h2>
+<form action="/categories" method="post">
+    Название: <input type="text" name="name" required>
+    Описание: <input type="text" name="description">
+    <button type="submit">Добавить</button>
+</form>
+
+<h2>Список категорий</h2>
+<table>
+    <tr><th>ID</th><th>Название</th><th>Описание</th><th>Действия</th></tr>
+    <tr th:each="cat : ${categories}">
+        <td th:text="${cat.idCategory}"></td>
+        <td th:text="${cat.name}"></td>
+        <td th:text="${cat.description}"></td>
+        <td><a th:href="@{/categories/delete/{id}(id=${cat.idCategory})}">Удалить</a></td>
+    </tr>
+</table>
+</body>
+</html>
