@@ -13,7 +13,7 @@
    ```
 2. Проверьте логин/пароль пользователя БД (пример: `postgres` / `123123`).
 3. Откройте файл:
-   `/home/runner/work/PracticalWork4Spring/PracticalWork4Spring/demo/src/main/resources/application.properties`
+   `demo/src/main/resources/application.properties`
 4. Укажите свои параметры:
    ```properties
    spring.datasource.url=jdbc:postgresql://localhost:5432/pgs
@@ -24,7 +24,7 @@
    ```
 5. Запустите приложение:
    ```bash
-   cd /home/runner/work/PracticalWork4Spring/PracticalWork4Spring/demo
+   cd demo
    mvn spring-boot:run
    ```
 
