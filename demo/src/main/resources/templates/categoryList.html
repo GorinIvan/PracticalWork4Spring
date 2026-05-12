@@ -20,9 +20,11 @@
 </form>
 
 <h2>Добавить категорию</h2>
-<form action="/categories" method="post">
-    Название: <input type="text" name="name" required>
-    Описание: <input type="text" name="description">
+<form action="/categories" method="post" th:object="${category}">
+    Название: <input type="text" th:field="*{name}" required>
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span><br>
+    Описание: <input type="text" th:field="*{description}" required>
+    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red"></span><br>
     <button type="submit">Добавить</button>
 </form>
 

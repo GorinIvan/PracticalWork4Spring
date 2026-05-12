@@ -1,5 +1,7 @@
 package org.example.demo.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "category")
@@ -7,7 +9,11 @@ public class CategoryModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCategory;
+    @NotBlank(message = "Название обязательно")
+    @Size(min = 2, max = 100, message = "Название должно быть от 2 до 100 символов")
     private String name;
+    @NotBlank(message = "Описание обязательно")
+    @Size(min = 5, max = 255, message = "Описание должно быть от 5 до 255 символов")
     private String description;
 
     public CategoryModel() {}

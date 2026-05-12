@@ -1,6 +1,10 @@
 package org.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "menu_item")
@@ -10,11 +14,19 @@ public class MenuItemModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idMenuItem;
 
+    @NotBlank(message = "Название обязательно")
+    @Size(min = 2, max = 100, message = "Название должно быть от 2 до 100 символов")
     private String name;
+    @NotBlank(message = "Описание обязательно")
+    @Size(min = 5, max = 255, message = "Описание должно быть от 5 до 255 символов")
     private String description;
+    @DecimalMin(value = "0.01", message = "Цена должна быть больше 0")
     private double price;
     private boolean isAvailable;
+    @NotBlank(message = "Ссылка на изображение обязательна")
+    @Size(max = 255, message = "Ссылка слишком длинная")
     private String imageUrl;
+    @Positive(message = "ID категории должен быть больше 0")
     private int categoryId;
 
     // ОБЯЗАТЕЛЬНО: пустой конструктор для базы данных

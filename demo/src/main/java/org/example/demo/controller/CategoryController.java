@@ -1,7 +1,9 @@
 package org.example.demo.controller;
 import org.example.demo.model.CategoryModel;
 import org.example.demo.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,9 @@ public class CategoryController {
 
     @GetMapping
     public String listCategories(Model model, @RequestParam(required = false) Integer searchId, @RequestParam(required = false) String searchName) {
+        if (!model.containsAttribute("category")) {
+            model.addAttribute("category", new CategoryModel());
+        }
         if (searchId != null) {
             CategoryModel c = service.findById(searchId);
             model.addAttribute("categories", c != null ? java.util.List.of(c) : java.util.List.of());
@@ -25,7 +30,11 @@ public class CategoryController {
     }
 
     @PostMapping
-    public String saveCategory(CategoryModel category) {
+    public String saveCategory(@Valid @ModelAttribute("category") CategoryModel category, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", service.findAllCategories());
+            return "categoryList";
+        }
         service.saveCategory(category);
         return "redirect:/categories";
     }

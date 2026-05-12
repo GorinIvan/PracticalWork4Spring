@@ -20,9 +20,11 @@
 </form>
 
 <h2>Добавить роль</h2>
-<form action="/roles" method="post">
-    Название: <input type="text" name="nameRole" required>
-    Описание: <input type="text" name="description">
+<form action="/roles" method="post" th:object="${role}">
+    Название: <input type="text" th:field="*{nameRole}" required>
+    <span th:if="${#fields.hasErrors('nameRole')}" th:errors="*{nameRole}" style="color:red"></span><br>
+    Описание: <input type="text" th:field="*{description}" required>
+    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red"></span><br>
     <button type="submit">Добавить</button>
 </form>
 

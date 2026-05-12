@@ -1,7 +1,9 @@
 package org.example.demo.controller;
 import org.example.demo.model.StudentModel;
 import org.example.demo.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,9 @@ public class StudentController {
 
     @GetMapping
     public String listStudents(Model model, @RequestParam(required = false) Long searchId, @RequestParam(required = false) String searchName) {
+        if (!model.containsAttribute("student")) {
+            model.addAttribute("student", new StudentModel());
+        }
         if (searchId != null) {
             StudentModel s = service.findById(searchId);
             model.addAttribute("students", s != null ? java.util.List.of(s) : java.util.List.of());
@@ -25,7 +30,14 @@ public class StudentController {
     }
 
     @PostMapping
-    public String saveStudent(StudentModel student) { service.createStudent(student); return "redirect:/students"; }
+    public String saveStudent(@Valid @ModelAttribute("student") StudentModel student, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("students", service.findAllStudent());
+            return "studentList";
+        }
+        service.createStudent(student);
+        return "redirect:/students";
+    }
 
     @GetMapping("/delete/{id}")
     public String deleteStudent(@PathVariable Long id) { service.deleteStudent(id); return "redirect:/students"; }

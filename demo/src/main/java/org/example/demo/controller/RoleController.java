@@ -1,7 +1,9 @@
 package org.example.demo.controller;
 import org.example.demo.model.RoleModel;
 import org.example.demo.service.RoleService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,9 @@ public class RoleController {
 
     @GetMapping
     public String listRoles(Model model, @RequestParam(required = false) Integer searchId, @RequestParam(required = false) String searchName) {
+        if (!model.containsAttribute("role")) {
+            model.addAttribute("role", new RoleModel());
+        }
         if (searchId != null) {
             RoleModel r = service.findById(searchId);
             model.addAttribute("roles", r != null ? java.util.List.of(r) : java.util.List.of());
@@ -25,7 +30,14 @@ public class RoleController {
     }
 
     @PostMapping
-    public String saveRole(RoleModel role) { service.saveRole(role); return "redirect:/roles"; }
+    public String saveRole(@Valid @ModelAttribute("role") RoleModel role, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roles", service.findAllRoles());
+            return "roleList";
+        }
+        service.saveRole(role);
+        return "redirect:/roles";
+    }
 
     @GetMapping("/delete/{id}")
     public String deleteRole(@PathVariable int id) { service.deleteRole(id); return "redirect:/roles"; }

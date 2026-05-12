@@ -2,8 +2,10 @@ package org.example.demo.controller;
 
 import org.example.demo.model.MenuItemModel;
 import org.example.demo.service.MenuItemService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -39,7 +41,10 @@ public class MenuItemController {
     }
 
     @PostMapping
-    public String saveMenuItem(@ModelAttribute("menuItem") MenuItemModel menuItem) {
+    public String saveMenuItem(@Valid @ModelAttribute("menuItem") MenuItemModel menuItem, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "menuItemForm";
+        }
         service.saveMenuItem(menuItem);
         return "redirect:/menuItems";
     }
