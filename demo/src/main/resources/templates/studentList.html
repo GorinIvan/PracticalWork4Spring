@@ -2,16 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Студенты</title>
+    <title>Клиенты магазина кошек</title>
     <style>
         body { font-family: Arial; padding: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 8px; }
         th { background-color: #607D8B; color: white; }
+        .error { color: #c62828; font-size: 13px; margin: 4px 0 10px; }
     </style>
 </head>
 <body>
-<h2>Поиск студента</h2>
+<h2>Поиск клиента</h2>
 <form action="/students" method="get">
     ID: <input type="number" name="searchId">
     Имя: <input type="text" name="searchName">
@@ -19,15 +20,21 @@
     <a href="/students">Сбросить</a>
 </form>
 
-<h2>Добавить студента</h2>
-<form action="/students" method="post">
-    Имя: <input type="text" name="name" required>
-    Фамилия: <input type="text" name="surname" required>
-    Email: <input type="email" name="email">
+<h2>Добавить клиента</h2>
+<form th:action="@{/students}" th:object="${student}" method="post">
+    Имя: <input type="text" th:field="*{name}" required>
+    <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+    Фамилия: <input type="text" th:field="*{surname}" required>
+    <div class="error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
+
+    Email: <input type="email" th:field="*{email}" required>
+    <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
     <button type="submit">Добавить</button>
 </form>
 
-<h2>Список студентов</h2>
+<h2>Список клиентов</h2>
 <table>
     <tr><th>ID</th><th>Имя</th><th>Фамилия</th><th>Email</th><th>Действия</th></tr>
     <tr th:each="s : ${students}">

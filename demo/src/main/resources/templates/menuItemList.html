@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Меню ресторана</title>
+    <title>Товары магазина кошек</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; }
         .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
@@ -17,7 +17,7 @@
 </head>
 <body>
 <div class="container">
-    <h2>Список блюд (Меню)</h2>
+    <h2>Список товаров магазина кошек</h2>
 
     <form action="/menuItems" method="get" class="search-form">
         <label>Поиск по ID: <input type="number" name="searchId"></label>
@@ -26,7 +26,7 @@
         <a href="/menuItems">Сбросить</a>
     </form>
 
-    <a href="/menuItems/new">Добавить новое блюдо</a>
+    <a href="/menuItems/new">Добавить новый товар</a>
 
     <table>
         <thead>

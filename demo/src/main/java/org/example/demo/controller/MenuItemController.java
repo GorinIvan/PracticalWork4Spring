@@ -1,10 +1,17 @@
 package org.example.demo.controller;
 
+import jakarta.validation.Valid;
 import org.example.demo.model.MenuItemModel;
 import org.example.demo.service.MenuItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/menuItems")
@@ -20,7 +27,6 @@ public class MenuItemController {
     public String listMenuItems(Model model,
                                 @RequestParam(required = false) Integer searchId,
                                 @RequestParam(required = false) String searchName) {
-        // Логика поиска
         if (searchId != null) {
             MenuItemModel item = service.findById(searchId);
             model.addAttribute("menuItems", item != null ? java.util.List.of(item) : java.util.List.of());
@@ -34,12 +40,19 @@ public class MenuItemController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("menuItem", new MenuItemModel());
+        if (!model.containsAttribute("menuItem")) {
+            model.addAttribute("menuItem", new MenuItemModel());
+        }
         return "menuItemForm";
     }
 
     @PostMapping
-    public String saveMenuItem(@ModelAttribute("menuItem") MenuItemModel menuItem) {
+    public String saveMenuItem(@Valid @ModelAttribute("menuItem") MenuItemModel menuItem,
+                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "menuItemForm";
+        }
+
         service.saveMenuItem(menuItem);
         return "redirect:/menuItems";
     }

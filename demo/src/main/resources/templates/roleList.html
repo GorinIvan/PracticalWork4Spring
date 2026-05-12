@@ -2,12 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Роли</title>
+    <title>Роли сотрудников</title>
     <style>
         body { font-family: Arial; padding: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 8px; }
         th { background-color: #2196F3; color: white; }
+        .error { color: #c62828; font-size: 13px; margin: 4px 0 10px; }
     </style>
 </head>
 <body>
@@ -20,9 +21,13 @@
 </form>
 
 <h2>Добавить роль</h2>
-<form action="/roles" method="post">
-    Название: <input type="text" name="nameRole" required>
-    Описание: <input type="text" name="description">
+<form th:action="@{/roles}" th:object="${role}" method="post">
+    Название: <input type="text" th:field="*{nameRole}" required>
+    <div class="error" th:if="${#fields.hasErrors('nameRole')}" th:errors="*{nameRole}"></div>
+
+    Описание: <input type="text" th:field="*{description}" required>
+    <div class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+
     <button type="submit">Добавить</button>
 </form>
 
